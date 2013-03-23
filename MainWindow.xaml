@@ -1,0 +1,97 @@
+﻿<Window x:Class="CaseFlowManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:CaseFlowManager"
+        Title="案件流程管理器" Height="400" Width="700" MinHeight="350" MinWidth="500"
+        Background="AliceBlue" 
+        Icon="/CaseFlowManager;component/Resource/Images/appico.png">
+    <Window.Resources>
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Height" Value="25"/>
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Margin" Value="5,0"/>
+            <Setter Property="Background" Value="Cyan"/>
+        </Style>
+        <local:ProcessConverter x:Key="processConverter"/>
+        <DataTemplate x:Key="statusDT">
+            <Image Source="{Binding Status, Converter={StaticResource processConverter}}"/>
+        </DataTemplate>
+        <local:DocumentConverter x:Key="documentConverter"/>
+        <DataTemplate x:Key="docDT">
+            <Image Width="20" Height="20" Source="{Binding Document, Converter={StaticResource documentConverter}}" MouseLeftButtonDown="Image_MouseLeftButtonDown"/>
+        </DataTemplate>
+        <local:DateConverter x:Key="dateConverter"/>
+        <DataTemplate x:Key="startTimeDT">
+            <TextBlock Text="{Binding StartTime, Converter={StaticResource dateConverter}}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="endTimeDT">
+            <TextBlock Text="{Binding EndTime, Converter={StaticResource dateConverter}}"/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ToolBar Grid.RowSpan="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Margin="5" VerticalContentAlignment="Center" Background="AliceBlue">
+            <Button Name="newBtn" Click="newBtn_Click" Margin="5,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/CaseFlowManager;component/Resource/Images/new.png" Width="15" Height="15" />
+                    <TextBlock Text="新建"/>
+                </StackPanel>
+            </Button>
+            <Button Name="deleteBtn" Click="deleteBtn_Click" Margin="5,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/CaseFlowManager;component/Resource/Images/delete.png" Width="15" Height="15" />
+                    <TextBlock Text="删除"/>
+                </StackPanel>
+            </Button>
+            <Separator/>
+            <Button Name="finishBtn" IsEnabled="False" Click="finishBtn_Click" Margin="5,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/CaseFlowManager;component/Resource/Images/next.png" Width="15" Height="15" />
+                    <TextBlock Text="下一步"/>
+                </StackPanel>
+            </Button>
+            <Separator/>
+            <Button Name="exportBtn" Click="exportBtn_Click" Margin="5,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Image Source="/CaseFlowManager;component/Resource/Images/xls.png" Width="15" Height="15" />
+                    <TextBlock Text="导出Excel"/>
+                </StackPanel>
+            </Button>
+            <Separator/>
+            <StackPanel Orientation="Horizontal" Margin="5,0">
+                <Label Content="提醒"/>
+                <TextBox Name="remainderText" Height="20" Width="30" HorizontalContentAlignment="Right" />
+            </StackPanel>
+            <Button Name="setdayBtn" Content="设置" Click="setdayBtn_Click" Margin="5,0" />
+        </ToolBar>
+        <ListView Name="caseSummaryView" Grid.Row="1" Margin="5" 
+                  SelectionChanged="caseSummaryView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="编号" DisplayMemberBinding="{Binding id}" Width="30"/>
+                    <GridViewColumn Header="姓名" DisplayMemberBinding="{Binding name}" Width="70"/>
+                    <GridViewColumn Header="状态" CellTemplate="{StaticResource statusDT}" Width="30"/>
+                </GridView>                
+            </ListView.View>
+        </ListView>
+        <ListView Name="caseDetailView" Grid.Row="1" Grid.Column="1" Margin="5" 
+                    SelectionChanged="caseDetailView_SelectionChanged" >
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="顺序" DisplayMemberBinding="{Binding Order}" Width="30"/>
+                    <GridViewColumn Header="步骤" DisplayMemberBinding="{Binding name}"/>
+                    <GridViewColumn Header="文档" CellTemplate="{StaticResource docDT}" Width="40"/>
+                    <GridViewColumn Header="开始日期" CellTemplate="{StaticResource startTimeDT}"/>
+                    <GridViewColumn Header="结束日期" CellTemplate="{StaticResource endTimeDT}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

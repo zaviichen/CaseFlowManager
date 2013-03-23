@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="GB2312"?>
+<SystemConfig>
+  <SystemInfo>
+    <path>
+    </path>
+    <reminder>30</reminder>
+  </SystemInfo>
+  <WorkFlow>
+    <step id="step1" name="违纪案件">
+      <next>step2</next>
+    </step>
+    <step id="step2" name="审阅案卷">
+      <next>s3</next>
+      <next>s4</next>
+      <next>s5</next>
+    </step>
+    <step id="s3" name="审理补证">
+      <next>s6</next>
+    </step>
+    <step id="s4" name="调查组补证">
+      <next>s6</next>
+    </step>
+    <step id="s5" name="案卷退回">
+      <next>s6</next>
+    </step>
+    <step id="s6" name="审理处分前谈话">
+      <next>s7</next>
+      <document>处分前谈话笔录.doc</document>
+    </step>
+    <step id="s7" name="审理室（小组）讨论审理报告（讨论稿）">
+      <next>null</next>
+    </step>
+  </WorkFlow>
+</SystemConfig>
